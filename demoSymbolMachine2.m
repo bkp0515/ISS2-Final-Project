@@ -90,6 +90,7 @@ imagesc(probMatrix);colorbar;title('Learned from training data');
 ylabel('preceding symbol');
 xlabel('forecasted symbol');
 
+
 % Now let's use the conditional pmfs that we just learned for forecasting 
 % the training data. 
 sequenceLength = initializeSymbolMachine('sequence_DIAtemp_train.mat',0);
@@ -99,7 +100,7 @@ probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 for ii = 2:sequenceLength
     % For each subsequent symbol, we can base our forecast on the preceding
     % symbol (which was given to us by the Symbol Machine)
-    %[symbol,penalty] = symbolMachine(???);
+    [symbol,penalty] = symbolMachine(probMatrix(sequence(ii-1),:));
     %                                ^^^ INSERT YOUR CODE HERE!
 end
 reportSymbolMachine;
@@ -122,7 +123,8 @@ probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 for ii = 2:sequenceLength
     % For each subsequent symbol, we can base our forecast on the preceding
     % symbol (which was given to us by the Symbol Machine)
-    %[symbol,penalty] = symbolMachine(???);
+    [symbol,penalty] = symbolMachine(probMatrix(sequence(ii-1),:)); 
+    % !!!!!!!!!!!!!!!!! This is the line to edit. were only supposed to edit the code on the inside.!!!!!!!!!!!!!!!!!!!!!!!
     %                                ^^^ INSERT YOUR CODE HERE!
 end
 reportSymbolMachine;
