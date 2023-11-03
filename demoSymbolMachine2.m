@@ -100,7 +100,7 @@ probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 for ii = 2:sequenceLength
     % For each subsequent symbol, we can base our forecast on the preceding
     % symbol (which was given to us by the Symbol Machine)
-    [symbol,penalty] = symbolMachine(probMatrix(sequence(ii-1),:));
+    [symbol,penalty] = symbolMachine(probMatrix(symbol,:));
     %                                ^^^ INSERT YOUR CODE HERE!
 end
 reportSymbolMachine;
@@ -123,7 +123,7 @@ probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 for ii = 2:sequenceLength
     % For each subsequent symbol, we can base our forecast on the preceding
     % symbol (which was given to us by the Symbol Machine)
-    [symbol,penalty] = symbolMachine(probMatrix(sequence(ii-1),:)); 
+    [symbol,penalty] = symbolMachine(probMatrix(symbol,:)); 
     % !!!!!!!!!!!!!!!!! This is the line to edit. were only supposed to edit the code on the inside.!!!!!!!!!!!!!!!!!!!!!!!
     %                                ^^^ INSERT YOUR CODE HERE!
 end
