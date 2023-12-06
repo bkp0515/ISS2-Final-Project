@@ -1,7 +1,5 @@
-%% PART 3 of 4
+%% Train the base model
 fprintf('======= TRAINING =========\n');
-
-
 clear all;
 load sequence_DIAtemp_train.mat;
 sequenceLength = length(sequence);
@@ -12,14 +10,7 @@ for ii = 2:sequenceLength
     symbolCounts(precedingSymbol,currentSymbol) = ...
         symbolCounts(precedingSymbol,currentSymbol) + 1.6;
 end
-probMatrix = symbolCounts;
-for ii = 1:9
-    probMatrix(ii,:) = probMatrix(ii,:)/sum(probMatrix(ii,:));
-end
-
-
-
-%% PART 4 of 4
+%% Test the base model
 fprintf('======= TEST =========\n');
 
 
@@ -27,41 +18,18 @@ sequenceLength = initializeSymbolMachine('sequence_DIAtemp_test.mat',0);
 probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 [symbol,penalty] = symbolMachine(probs);
 for ii = 2:sequenceLength
-    oldSymbol = symbol;
-    [symbol,penalty] = symbolMachine(probMatrix(symbol,:)); 
-    probMatrix(oldSymbol, symbol) = probMatrix(oldSymbol, symbol) + probMatrix(oldSymbol, symbol)*penalty/3000;
-    probMatrix(oldSymbol, :) = probMatrix(oldSymbol, :)/(sum(probMatrix(oldSymbol, :)));
+    [symbol,penalty] = symbolMachine((symbolCounts(symbol,:)/sum(symbolCounts(symbol, :)))); 
     
 end
 reportSymbolMachine;
 
-%%
-load sequence_DIAwind_train.mat;
-for ii = 1:sequenceLength
-    thisSymbol = sequence(ii);
-    symbolCounts(thisSymbol) = symbolCounts(thisSymbol) + 1;
+%% Test the adaptive model
+sequenceLength = initializeSymbolMachine('sequence_DIAtemp_test.mat',0);
+[symbol,penalty] = symbolMachine(probs);
+for ii = 2:sequenceLength
+    oldSymbol = symbol; % Save the previous symbol
+    [symbol,penalty] = symbolMachine((symbolCounts(symbol,:)/sum(symbolCounts(symbol, :)))); % Pass the current proabability into the symbol machine
+    symbolCounts(oldSymbol, symbol) = symbolCounts(oldSymbol, symbol) + 1.8; % "Adapt" markov chain
+
 end
-probs = symbolCounts/sum(symbolCounts);
-for jj = 1:100
-    sequenceLength = initializeSymbolMachine('sequence_DIAwind_train.mat',0);
-    %probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
-    [symbol,penalty] = symbolMachine(probs);
-    totPenalty = 0;
-    for ii = 2:floor(sequenceLength*0.9)
-        oldSymbol = symbol;
-        [symbol,penalty] = symbolMachine(probMatrix(symbol,:));
-        %probMatrix(oldSymbol, symbol) = probMatrix(oldSymbol, symbol) + probMatrix(oldSymbol, symbol)*penalty/jj;
-        %probMatrix(oldSymbol, :) = probMatrix(oldSymbol, :)/(sum(probMatrix(oldSymbol, :)));
-        %totPenalty = totPenalty + penalty;
-    end
-    for ii = floor(sequenceLength*0.9):sequenceLength-1
-        oldSymbol = symbol;
-        [symbol,penalty] = symbolMachine(probMatrix(symbol,:));
-        probMatrix(oldSymbol, symbol) = probMatrix(oldSymbol, symbol) + probMatrix(oldSymbol, symbol)*penalty/jj;
-        probMatrix(oldSymbol, :) = probMatrix(oldSymbol, :)/(sum(probMatrix(oldSymbol, :)));
-        totPenalty = totPenalty + penalty;
-    end
-    avgPenalty(jj) = totPenalty/(sequenceLength-floor(sequenceLength*0.9));
-    %reportSymbolMachine;
-end
-plot(avgPenalty)
+reportSymbolMachine;
