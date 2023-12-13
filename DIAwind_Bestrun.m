@@ -27,6 +27,9 @@ probs = symbolCounts/sum(symbolCounts);
 
 sequenceLength = initializeSymbolMachine('sequence_DIAwind_train.mat',0);
 
+image(symbolCounts)
+colorbar
+
 %probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 [symbol,penalty] = symbolMachine(probs);
 for ii = 2:sequenceLength

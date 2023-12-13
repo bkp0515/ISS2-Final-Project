@@ -15,6 +15,27 @@ for ii = 4:sequenceLength
         symbolCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) + 160;
 end
 probMatrix = symbolCounts;
+
+%For making demo plot
+sampleCounts = ones(9,9,9,9);
+for ii = 4:sequenceLength
+    currentSymbol = sequence(ii);
+    thirdSymbol = sequence(ii-1);
+    secondSymbol = sequence(ii-2);
+    firstSymbol = sequence(ii-3);
+    sampleCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) = ...
+        sampleCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) + 1;
+end
+subplot(1, 2, 1);
+stemVector = reshape(symbolCounts(1, 1, 1, :), [9 1]);
+stem(stemVector);
+
+subplot(1, 2, 2);
+stemVector = reshape(sampleCounts(1, 1, 1, :), [9 1]);
+stem(stemVector);
+%End demo plot stuff
+
+
 for i = 1:9
     for ii = 1:9
         for iii = 1:9

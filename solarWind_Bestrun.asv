@@ -15,6 +15,7 @@ for ii = 4:sequenceLength
         symbolCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) + 160;
 end
 probMatrix = symbolCounts;
+symbolCounts(1, 1, 1, :)
 for i = 1:9
     for ii = 1:9
         for iii = 1:9
@@ -68,7 +69,7 @@ fprintf('======= TRAINING =========\n');
 
 
 clear all;
-load sequence_Hawaiian_train.mat;
+load sequence_Dickens_train.mat;
 sequenceLength = length(sequence);
 symbolCounts = ones(9,9,9,9);
 for ii = 4:sequenceLength
@@ -77,7 +78,7 @@ for ii = 4:sequenceLength
     secondSymbol = sequence(ii-2);
     firstSymbol = sequence(ii-3);
     symbolCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) = ...
-        symbolCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) + 160;
+        symbolCounts(firstSymbol,secondSymbol,thirdSymbol,currentSymbol) + 150;
 end
 probMatrix = symbolCounts;
 for i = 1:9
@@ -88,7 +89,7 @@ for i = 1:9
     end
 end
 
-load sequence_Hawaiian_train.mat;
+load sequence_Dickens_train.mat;
 symbolCounts = ones(1,9); 
 for ii = 1:sequenceLength
     thisSymbol = sequence(ii);
@@ -96,7 +97,7 @@ for ii = 1:sequenceLength
 end
 probs = symbolCounts/sum(symbolCounts);
 
-sequenceLength = initializeSymbolMachine('sequence_solarWind_train.mat',0);
+sequenceLength = initializeSymbolMachine('sequence_Dickens_train.mat',0);
 %probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 [first,penalty] = symbolMachine(probs);
 [second,penalty] = symbolMachine(probs);
@@ -112,7 +113,7 @@ reportSymbolMachine;
 %% PART 4 of 4
 fprintf('======= TEST =========\n');
 
-sequenceLength = initializeSymbolMachine('sequence_Hawaiian_test.mat',0);
+sequenceLength = initializeSymbolMachine('sequence_Dickens_test.mat',0);
 
 %probs = [1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9 1/9];
 [first,penalty] = symbolMachine(probs);
